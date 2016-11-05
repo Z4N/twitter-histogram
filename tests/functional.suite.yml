@@ -1,0 +1,10 @@
+# Codeception Test Suite Configuration
+#
+# Suite for functional (integration) tests
+# Emulate web requests and make application process them
+
+class_name: FunctionalTester
+modules:
+    enabled:
+        - Silex:
+            app: 'web/index.php'

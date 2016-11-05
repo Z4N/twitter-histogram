@@ -1,6 +1,6 @@
 <?php
 
-class RootTest extends \Codeception\Test\Unit
+class TwitterAPITest extends \Codeception\Test\Unit
 {
     /**
      * @var \UnitTester

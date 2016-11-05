@@ -1,6 +1,7 @@
 {
   "require": {
     "silex/silex": "~2.0",
-    "codeception/codeception": "*"
+    "codeception/codeception": "*",
+    "j7mbo/twitter-api-php": "dev-master"
   }
 }

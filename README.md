@@ -15,10 +15,10 @@ This application consist of theses endpoints:
 * composer
 
 
-**First thing to do is to install the app depedencies using composer:**
+**Install the app depedencies using composer**  
 `composer install`
 
-**Configure Twitter API settings**
+**Configure Twitter API settings**  
 In order to use the twitter histogram call you need to enter valid Twitter API credentials.
 If you don't already have a Twitter account, you can sign up for one at https://twitter.com/.
 You'll need to create a Twitter application for accessing tweets, you can create one at https://dev.twitter.com/apps.
@@ -36,7 +36,8 @@ twitter:
 
 The easiest way to test the app without having to do server configuration is to run the PHP built in server on your environment (available since php 5.4)
 
-**To launch the app with our web directory as document root, go in the app directory and :**
+**Launch the app with web directory as document root**  
+From the app root directory execute this command:  
 `php -S localhost:8080 -t web web/index.php`
 
 
@@ -47,5 +48,5 @@ Codeception acceptance tests are configured to run and check on localhost:8080 a
 If you configured it differently you will need to edit the "url" value in the acceptance configuration file (tests/acceptance.suite.yml).
 
 
-**To run tests :**
+**To run tests :**  
 `php vendor/bin/codecept run`

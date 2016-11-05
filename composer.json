@@ -3,7 +3,8 @@
     "silex/silex": "~2.0",
     "codeception/codeception": "*",
     "j7mbo/twitter-api-php": "dev-master",
-    "rpodwika/yaml-config-service-provider" : "dev-master"
+    "rpodwika/yaml-config-service-provider" : "dev-master",
+    "twig/twig": "^1.27"
   },
   "autoload": {
     "psr-4": {

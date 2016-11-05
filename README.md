@@ -4,8 +4,9 @@ This application consist of theses endpoints:
 
 * **/** -> will respond with "Try /hello/:name" as text
 * **/hello/World** -> will respond with "Hello World" as text
-* **/histogram/username** -> will show number of tweets per hour of the day for user named "username"
-* **/histogram/pretty/username** -> same return as /histogram but in html readable view
+* **/histogram/username** -> will show histogram of number of tweets per hour of the day for user named "username"
+* **/histogram/username.json** -> JSON return of histogram
+* **/histogram/username.formatted** -> JSON human formatted return of histogram
 
 ## Install and run app
 

@@ -19,33 +19,55 @@ class TwitterApiController implements ControllerProviderInterface
     {
         $controllers = $app['controllers_factory'];
 
+        $controllers->get('/{twitterUsername}.json','App\Controller\TwitterApiController::getHistogramJsonAction');
+        $controllers->get('/{twitterUsername}.formatted','App\Controller\TwitterApiController::getHistogramFormattedAction');
         $controllers->get('/{twitterUsername}','App\Controller\TwitterApiController::getHistogramAction');
-        $controllers->get('/pretty/{twitterUsername}','App\Controller\TwitterApiController::getHistogramPrettyAction');
 
         return $controllers;
     }
 
     /**
+     * Counts tweets per hour in a day in JSON format
      *
-     * @return Counts tweets per hour in a day in JSON format
+     * @return JsonResponse
+     */
+    public function getHistogramJsonAction($twitterUsername, Application $app)
+    {
+        $data = $this->getHourCounts($twitterUsername, $app);
+
+        return new JsonResponse($data);
+    }
+
+    /**
+     * Counts tweets per hour in a day in a human readable format
+     *
+     * @return string
+     */
+    public function getHistogramFormattedAction($twitterUsername, Application $app)
+    {
+        return '<pre>'.json_encode($this->getHourCounts($twitterUsername, $app), JSON_PRETTY_PRINT).'<pre>';
+    }
+
+    /**
+     * Counts tweets per hour in a day in a human readable format
+     *
+     * @return string
      */
     public function getHistogramAction($twitterUsername, Application $app)
     {
         $data = $this->getHourCounts($twitterUsername, $app);
 
-        // Create and return a JSON response
-        return new JsonResponse($data);
+        return $app['twig']->render('histogram.html.twig', array(
+            'data' => $data,
+            'is_average' => $app['config']['twitter']['average_count'])
+        );
     }
 
     /**
+     * Counts number of tweets per hour in the day
      *
-     * @return Counts tweets per hour in a day in a human readable format
+     * @return array
      */
-    public function getHistogramPrettyAction($twitterUsername, Application $app)
-    {
-        return '<pre>'.json_encode($this->getHourCounts($twitterUsername, $app), JSON_PRETTY_PRINT).'<pre>';
-    }
-
     private function getHourCounts($twitterUsername, Application $app)
     {
         $tweets = array();

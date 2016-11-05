@@ -3,5 +3,10 @@
     "silex/silex": "~2.0",
     "codeception/codeception": "*",
     "j7mbo/twitter-api-php": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/App"
+    }
   }
 }

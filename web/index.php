@@ -4,9 +4,13 @@ require_once 'vendor/autoload.php';
 
 use Silex\Application;
 use App\Controller\TwitterApiController;
+use Rpodwika\Silex\YamlConfigServiceProvider;
 
 // init Silex app
 $app = new Application();
+
+// Get settings
+$app->register(new YamlConfigServiceProvider("settings.yml"));
 
 // Mount Twitter API controller provider
 $app->mount('/histogram', new TwitterApiController());

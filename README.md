@@ -19,6 +19,7 @@ This application consist of theses endpoints:
 
 
 The easiest way to test the app without having to do server configuration is to run the PHP built in server on your environment (available since php 5.4)
+
 **To launch the app with our web directory as document root, go in the app directory and :**
 `php -S localhost:8080 -t web web/index.php`
 

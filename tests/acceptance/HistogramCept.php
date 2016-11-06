@@ -3,7 +3,7 @@ $I = new AcceptanceTester($scenario);
 
 $I->wantTo('Test /histogram/:username endpoint');
 
-$I->amOnPage('/histogram/BigCommerce.json');
+$I->amOnPage('/histogram/Z4N.json');
 
 $I->seeResponseIsJson();
 $I->seeResponseCodeIs(200);

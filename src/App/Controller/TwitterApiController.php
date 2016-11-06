@@ -59,7 +59,7 @@ class TwitterApiController implements ControllerProviderInterface
      */
     public function getHistogramAction($twitterUsername, Application $app)
     {
-        $data = $this->getHourCounts($twitterUsername, $app);
+        $data = $this->getHourCounts($twitterUsername, $app, true);
 
         return $app['twig']->render('histogram.html.twig', array(
             'data' => $data,
@@ -72,20 +72,22 @@ class TwitterApiController implements ControllerProviderInterface
      *
      * @return array|string
      */
-    private function getHourCounts($twitterUsername, Application $app)
+    private function getHourCounts($twitterUsername, Application $app, $moreStats = false)
     {
         $tweets = array();
         $tweets_limit = $app['config']['twitter']['tweets_limit'];
         $tweets_limit = $tweets_limit > 3200 ? 3200 : ($tweets_limit < 201 ? 201 : $tweets_limit);
+        $deletedTweetsTolerance = 10;
+        $deletedCount = 0;
 
         $max_id = null;
-        for ($count = 200; $count < $tweets_limit; $count += 200) {
+        for ($count = 200; $count <= $tweets_limit; $count += 200) {
             if (null !== $max_id && $max_id == '') {
                 break;
             }
 
             $url = 'https://api.twitter.com/1.1/statuses/user_timeline.json';
-            $getfield = '?screen_name='.$twitterUsername.'&count='.$count;
+            $getfield = '?screen_name='.$twitterUsername.'&count='.$count.'&include_rts=true&include_rts=true&exclude_replies=false';
             $getfield = is_null($max_id) ? $getfield : $getfield.'&max_id='.$max_id;
             $requestMethod = 'GET';
 
@@ -94,6 +96,8 @@ class TwitterApiController implements ControllerProviderInterface
             $response = json_decode($twitter->setGetfield($getfield)
                 ->buildOauth($url, $requestMethod)
                 ->performRequest());
+
+            $respCount = count($response);
 
             // Handling errors
             if(isset($response->error)) {
@@ -107,8 +111,13 @@ class TwitterApiController implements ControllerProviderInterface
             $tweets = array_merge($tweets, $response);
 
             // If less than count then stop
-            if(count($response) < 200) {
+            if($respCount < 200-$deletedTweetsTolerance) {
                 break;
+            }
+
+            // Check for deleted tweets
+            if($respCount < 200) {
+                $deletedCount += (200 - $respCount);
             }
 
             // Get the last index of $response array
@@ -119,6 +128,12 @@ class TwitterApiController implements ControllerProviderInterface
         $hourCounts = array();
         for ($i=0;$i<=24;$i++) {
             $hourCounts[sprintf("%02d", $i).'h'] = 0;
+        }
+
+        // Save total number of tweets retrieved and deleted not in the total count
+        if($moreStats) {
+            $hourCounts['more']['deleted'] = $deletedCount;
+            $hourCounts['more']['total'] = count($tweets);
         }
 
         // Counts per hour for the user's tweets

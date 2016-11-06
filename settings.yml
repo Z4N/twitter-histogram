@@ -5,4 +5,4 @@ twitter:
         oauth_access_token: YOUR_TWITTER_ACCESS_TOKEN
         oauth_access_token_secret: YOUR_TWITTER_ACCESS_TOKEN_SECRET
     tweets_limit: 500
-    average_count: true
+    average_count: false

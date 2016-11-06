@@ -35,6 +35,10 @@ class TwitterApiController implements ControllerProviderInterface
     {
         $data = $this->getHourCounts($twitterUsername, $app);
 
+        if (isset($data['error'])) {
+            return new JsonResponse($data, 400);
+        }
+
         return new JsonResponse($data);
     }
 
@@ -66,7 +70,7 @@ class TwitterApiController implements ControllerProviderInterface
     /**
      * Counts number of tweets per hour in the day
      *
-     * @return array
+     * @return array|string
      */
     private function getHourCounts($twitterUsername, Application $app)
     {
@@ -91,8 +95,21 @@ class TwitterApiController implements ControllerProviderInterface
                 ->buildOauth($url, $requestMethod)
                 ->performRequest());
 
+            // Handling errors
+            if(isset($response->error)) {
+                return array('error' => $response->error);
+            }
+            if(isset($response->errors)) {
+                $errors = $response->errors[0];
+                return array('error' => $errors->message);
+            }
 
             $tweets = array_merge($tweets, $response);
+
+            // If less than count then stop
+            if(count($response) < 200) {
+                break;
+            }
 
             // Get the last index of $response array
             $max_id = $response[count($response) - 1]->id_str;
@@ -103,7 +120,7 @@ class TwitterApiController implements ControllerProviderInterface
         for ($i=0;$i<=24;$i++) {
             $hourCounts[sprintf("%02d", $i).'h'] = 0;
         }
-    
+
         // Counts per hour for the user's tweets
         if($app['config']['twitter']['average_count'])
         {

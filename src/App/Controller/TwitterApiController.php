@@ -29,6 +29,9 @@ class TwitterApiController implements ControllerProviderInterface
     /**
      * Counts tweets per hour in a day in JSON format
      *
+     * @param string $twitterUsername Twitter user screen name
+     * @param Application $app
+     * 
      * @return JsonResponse
      */
     public function getHistogramJsonAction($twitterUsername, Application $app)
@@ -44,6 +47,9 @@ class TwitterApiController implements ControllerProviderInterface
 
     /**
      * Counts tweets per hour in a day in a human readable format
+     *
+     * @param string $twitterUsername Twitter user screen name
+     * @param Application $app
      *
      * @return string
      */
@@ -70,7 +76,11 @@ class TwitterApiController implements ControllerProviderInterface
     /**
      * Counts number of tweets per hour in the day
      *
-     * @return array|string
+     * @param string $twitterUsername Twitter user screen name
+     * @param Application $app
+     * @param bool $moreStats Adds more stats in the array return containing Total and deleted tweet counts
+     *
+     * @return array
      */
     private function getHourCounts($twitterUsername, Application $app, $moreStats = false)
     {

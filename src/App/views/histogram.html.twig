@@ -4,6 +4,9 @@
     {% if data.error is defined %}
         <div>{{ data.error }}</div>
     {% else %}
+        <h1 style="font-family: 'Roboto', sans-serif;font-size: 1em;">
+            Total tweets retrieved: {{ data.more.total }} (with {{ data.more.deleted }} deleted)
+        </h1>
         <canvas id="histogram"></canvas>
 
         <script type="text/javascript">
@@ -15,8 +18,7 @@
                              '8 am', '9 am', '10 am', '11 am', '12 am', '1 pm', '2 pm',
                              '3 pm', '4 pm', '5 pm', '6 pm', '7 pm', '8 pm', '9 pm', '10 pm', '11 pm', '12 pm'],
                     datasets: [{
-                        label: '{% if is_average %}average {% endif %}'+
-                        'number of tweets (Total = {{ data.more.total }} - Deleted = {{ data.more.deleted }})',
+                        label: '{% if is_average %}average {% endif %}number of tweets',
                         data: [{{ data|slice(start, length - 1)|join(',') }}],
                         backgroundColor: "rgba(47,194,239,0.7)"
                     }]

@@ -9,7 +9,7 @@ $I->seeResponseIsJson();
 $I->seeResponseCodeIs(200);
 
 $hourCounts = array();
-for ($i=0;$i<=24;$i++) {
+for ($i=0;$i<=23;$i++) {
     $hourCounts[sprintf("%02d", $i).'h'] = 'integer|float';
 }
 

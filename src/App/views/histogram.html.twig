@@ -4,7 +4,7 @@
     {% if data.error is defined %}
         <div>{{ data.error }}</div>
     {% else %}
-        <h1 style="font-family: 'Roboto', sans-serif;font-size: 1em;">
+        <h1 style="font-family: 'Roboto', sans-serif; font-size: 1em;">
             Total tweets retrieved: {{ data.more.total }} (with {{ data.more.deleted }} deleted)
         </h1>
         <canvas id="histogram"></canvas>

@@ -126,7 +126,7 @@ class TwitterApiController implements ControllerProviderInterface
 
         // Initialize all day hours
         $hourCounts = array();
-        for ($i=0;$i<=24;$i++) {
+        for ($i=0;$i<=23;$i++) {
             $hourCounts[sprintf("%02d", $i).'h'] = 0;
         }
 
